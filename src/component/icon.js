@@ -2,7 +2,7 @@ import {
   html, BaseElement, component,
 } from '../core';
 
-export default @component('otter-icon')
+export default @component('wolf-icon')
 class Icon extends BaseElement {
   render() {
     const { type } = this.$props;

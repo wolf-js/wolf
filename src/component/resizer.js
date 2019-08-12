@@ -41,7 +41,7 @@ function mousedownHandler() {
     });
   };
 }
-export default @component('otter-resizer')
+export default @component('wolf-resizer')
 class Resizer extends BaseElement {
   $state = initState({});
 

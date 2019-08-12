@@ -5,7 +5,7 @@ import { t } from '../locale/locale';
 function dragstart(type, { dataTransfer, target }) {
   // console.log(':::::::>');
   const crt = document.createElement('div');
-  crt.className = 'otter-drag';
+  crt.className = 'wolf-drag';
   crt.innerHTML = target.innerHTML;
   target.dragEl = crt;
   document.body.appendChild(crt);
@@ -33,12 +33,12 @@ function buildItems() {
   });
 }
 
-export default @component('otter-form-type-palette')
+export default @component('wolf-form-type-palette')
 class FormTypePalette extends BaseElement {
   render() {
     return html`
     <div class="header">${t('form.palette')}</div> 
-    <ul class="otter-list">
+    <ul class="wolf-list">
       ${buildItems.call(this)}
     </ul>
     `;

@@ -1,6 +1,6 @@
 import { html, BaseElement, component } from '../core';
 
-export default @component('otter-scrollbar')
+export default @component('wolf-scrollbar')
 class Scrollbar extends BaseElement {
   onscroll = (evt) => {
     evt.stopPropagation();

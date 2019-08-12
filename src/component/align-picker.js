@@ -4,15 +4,15 @@ import {
 import { onChange, Dropdown } from './dropdown';
 import './icon';
 
-export default @component('otter-align-picker')
+export default @component('wolf-align-picker')
 class AlignPicker extends Dropdown {
   render() {
     const { items, value } = this.$props;
     const { $visible } = this;
     return html`
-    <otter-icon .type="${`align-${value}`}"></otter-icon>
-    <ul class="content otter-list" .show="${$visible}">
-      ${items.map(it => html`<li @click.stop="${onChange.bind(this, it)}"><otter-icon .type="${`align-${it}`}"></otter-icon></li>`)}
+    <wolf-icon .type="${`align-${value}`}"></wolf-icon>
+    <ul class="content wolf-list" .show="${$visible}">
+      ${items.map(it => html`<li @click.stop="${onChange.bind(this, it)}"><wolf-icon .type="${`align-${it}`}"></wolf-icon></li>`)}
     </ul>
     `;
   }

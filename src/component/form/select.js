@@ -23,7 +23,7 @@ function vText(items, v) {
   return '' || (item && item[1]);
 }
 
-export default @component('otter-select')
+export default @component('wolf-select')
 class Select extends Base {
   $visible = false;
 
@@ -35,7 +35,7 @@ class Select extends Base {
     // console.log('$visible:', $visible);
     return html`
     <div class="only-text">${vText(items, value)}</div>
-    <ul class="content otter-list" .show="${$visible}" style="${{ width: width || 'auto' }}">
+    <ul class="content wolf-list" .show="${$visible}" style="${{ width: width || 'auto' }}">
       ${items.map(it => html`<li @click.stop="${onChange.bind(this, it[0])}">${it[1]}</li>`)}
     </ul>
     `;

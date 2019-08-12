@@ -1,7 +1,7 @@
 import { html, component, toggle } from '../../core';
 import { Base } from './base';
 
-export default @component('otter-checkbox')
+export default @component('wolf-checkbox')
 class Checkbox extends Base {
   onclick = () => {
     const nval = !this.$props.value;

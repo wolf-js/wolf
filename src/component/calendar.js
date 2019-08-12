@@ -119,7 +119,7 @@ function buildBodyTrs() {
 }
 // private methods --- end ----
 
-export default @component('otter-calendar')
+export default @component('wolf-calendar')
 class Calendar extends BaseElement {
   $state = {
     date: new Date(),

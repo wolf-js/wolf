@@ -1,5 +1,5 @@
 /* global window */
-export const cssPrefix = 'otter';
+export const cssPrefix = 'wolf';
 export const dpr = window.devicePixelRatio || 1;
 export default {
   cssPrefix,

@@ -23,13 +23,13 @@ function buildItems() {
   });
 }
 
-export default @component('otter-line-type-picker')
+export default @component('wolf-line-type-picker')
 class LineTypePicker extends Dropdown {
   render() {
     const { $visible } = this;
     return html`
-    <otter-icon .type="line-type"></otter-icon>
-    <ul class="content otter-list" .show="${$visible}">
+    <wolf-icon .type="line-type"></wolf-icon>
+    <ul class="content wolf-list" .show="${$visible}">
       ${buildItems.call(this)}
     </ul>
     `;

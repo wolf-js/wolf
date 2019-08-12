@@ -2,7 +2,7 @@ import {
   html, BaseElement, component,
 } from '../core';
 
-export default @component('otter-selector')
+export default @component('wolf-selector')
 class Selector extends BaseElement {
   render() {
     let {

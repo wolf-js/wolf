@@ -1,5 +1,5 @@
 {
-  "name": "otter",
+  "name": "wolf",
   "version": "1.0.0",
   "description": "a web javascript form designer",
   "main": "src/index.js",
@@ -33,7 +33,7 @@
   },
   "keywords": [
     "javascript",
-    "otter",
+    "wolf",
     "form-designer",
     "form",
     "designer",

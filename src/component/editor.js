@@ -22,7 +22,7 @@ function setSelectionRange(position) {
   }, 0);
 }
 
-export default @component('otter-editor')
+export default @component('wolf-editor')
 class Editor extends BaseElement {
   render() {
     const { offset, content, style } = this.$props;

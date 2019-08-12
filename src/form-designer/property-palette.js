@@ -26,32 +26,32 @@ function buildField(prop, v) {
   let field = '';
   if (prop === 'min' || prop === 'max') {
     field = html`
-      <otter-input .type="number" .max-length="6"
+      <wolf-input .type="number" .max-length="6"
         .value="${v}" .width="80px"
         @change="${valueChange.bind(this, `${prop}`)}"
-        ></otter-input>
+        ></wolf-input>
     `;
   } else if (prop === 'required') {
     field = html`
-      <otter-checkbox .value="${v}"
+      <wolf-checkbox .value="${v}"
         @change="${valueChange.bind(this, `${prop}`)}"
-        ></otter-checkbox>
+        ></wolf-checkbox>
     `;
   } else if (prop === 'precision') {
     field = html`
-      <otter-select class="bottom left" .value="${v || 2}"
+      <wolf-select class="bottom left" .value="${v || 2}"
         @change="${valueChange.bind(this, `${prop}`)}"
-        .width="46px" .items="${precisions}"></otter-form-select>
+        .width="46px" .items="${precisions}"></wolf-form-select>
     `;
   } else if (prop === 'options') {
     field = html`
-      <otter-input .value="${v}" .width="80px" .required="true" .hint="k:na,k1:xx"
-        @change="${valueChange.bind(this, `${prop}`)}"></otter-input>
+      <wolf-input .value="${v}" .width="80px" .required="true" .hint="k:na,k1:xx"
+        @change="${valueChange.bind(this, `${prop}`)}"></wolf-input>
     `;
   } else {
     field = html`
-      <otter-input .value="${v}" .width="80px"
-        @change="${valueChange.bind(this, `${prop}`)}"></otter-input>
+      <wolf-input .value="${v}" .width="80px"
+        @change="${valueChange.bind(this, `${prop}`)}"></wolf-input>
     `;
   }
   const label = t(`form.property.${prop}`);
@@ -63,7 +63,7 @@ function buildField(prop, v) {
   `;
 }
 
-export default @component('otter-form-property-palette')
+export default @component('wolf-form-property-palette')
 class FormPropertyPalette extends BaseElement {
   render() {
     const { value, fields } = this.$props;
@@ -76,30 +76,30 @@ class FormPropertyPalette extends BaseElement {
     const title = t('form.property.title');
     return html`
     <div class="header">${title}</div>
-    <div class="otter-form">
+    <div class="wolf-form">
       <div class="field">
         <label style="width: 60px;">${t('form.property.type')}</label>
-        <otter-input class="disabled" .type="text"
-          .value="${rule.type}" .width="80px"></otter-input>
+        <wolf-input class="disabled" .type="text"
+          .value="${rule.type}" .width="80px"></wolf-input>
       </div>
       <div class="field">
         <label style="width: 60px;">${t('form.property.ref')}</label>
-        <otter-input class="disabled" .type="text"
-          .value="${ref}" .width="80px"></otter-input>
+        <wolf-input class="disabled" .type="text"
+          .value="${ref}" .width="80px"></wolf-input>
       </div>
       <div class="field">
         <label style="width: 60px;">${t('form.property.key')}</label>
-        <otter-input .type="key" .max-length="20"
+        <wolf-input .type="key" .max-length="20"
           @change="${valueChange.bind(this, 'key')}"
-          .value="${key}" .width="80px"></otter-input>
+          .value="${key}" .width="80px"></wolf-input>
       </div>
       ${fields.map(it => buildField.call(this, it, rule[it]))}
-      <div class="otter-buttons">
-        <div class="otter-button primary"
+      <div class="wolf-buttons">
+        <div class="wolf-button primary"
           @click="${change.bind(this, 'save')}">
           ${t('button.save')}
         </div>
-        <div class="otter-button"
+        <div class="wolf-button"
           @click="${change.bind(this, 'remove')}">
           ${t('button.remove')}
         </div>

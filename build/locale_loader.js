@@ -2,9 +2,9 @@ const path = require('path');
 
 function getLocaleCode(name, code) {
   return `${code.replace('export default', 'const message =')}
-if (window && window.otter) {
-  window.otter.$messages = window.otter.$messages || {};
-  window.otter.$messages['${name}'] = message;
+if (window && window.wolf) {
+  window.wolf.$messages = window.wolf.$messages || {};
+  window.wolf.$messages['${name}'] = message;
 }
 export default message;
 `;

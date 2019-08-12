@@ -5,7 +5,7 @@ const resolve = dir => path.join(__dirname, '..', dir);
 
 module.exports = {
   entry: {
-    'otter': './src/index.js',
+    'wolf': './src/index.js',
   },
   module: {
     rules: [

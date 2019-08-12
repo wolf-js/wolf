@@ -14,7 +14,7 @@ function inputHandler(evt) {
   this.change(value);
 }
 
-export default @component('otter-input')
+export default @component('wolf-input')
 class Input extends Base {
   $state = {
     tipShow: false,

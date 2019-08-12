@@ -26,7 +26,7 @@ function buildThemeColors() {
   return themeColors.map(colors => html`<tr>${buildTds.call(this, colors)}</tr>`);
 }
 
-export default @component('otter-color-palette')
+export default @component('wolf-color-palette')
 class ColorPalette extends BaseElement {
   render() {
     return html`

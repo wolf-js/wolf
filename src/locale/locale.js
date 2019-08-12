@@ -28,8 +28,8 @@ function translate(key, messages, ...args) {
 
 function t(key, ...args) {
   let v = translate(key, $messages, ...args);
-  if (!v && window && window.otter && window.otter.$messages) {
-    v = translate(key, window.otter.$messages, ...args);
+  if (!v && window && window.wolf && window.wolf.$messages) {
+    v = translate(key, window.wolf.$messages, ...args);
   }
   return v || '';
 }

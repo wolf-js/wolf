@@ -249,7 +249,7 @@ function bindWindowEvents() {
   });
 }
 
-export default @component('otter-form-designer')
+export default @component('wolf-form-designer')
 class FormDesigner extends BaseElement {
   $state = {
     editor: {
@@ -317,7 +317,7 @@ class FormDesigner extends BaseElement {
     };
     // console.log('formProperty:', formProperty);
     return html`
-    <otter-toolbar .value="${toolbarValue}" @change="${toolbarChange.bind(this)}"></otter-toolbar>
+    <wolf-toolbar .value="${toolbarValue}" @change="${toolbarChange.bind(this)}"></wolf-toolbar>
     <div class="content">
       <canvas></canvas>
       <div class="overlayer" style="${{ width, height }}"
@@ -326,40 +326,40 @@ class FormDesigner extends BaseElement {
         @mousemove="${overlayerMousemove.bind(this)}"
         @mousedown="${overlayerMousedown.bind(this)}">
         <div class="content" style="${olcstyle}">
-          <otter-selector .show="${true}"
-            .offset="${selectedCellBox}"></otter-selector>
-          <otter-editor .show="${editor.show}"
+          <wolf-selector .show="${true}"
+            .offset="${selectedCellBox}"></wolf-selector>
+          <wolf-editor .show="${editor.show}"
             .offset="${editor.offset}"
             .content="${editor.content}"
             .style="${editor.style}"
-            @change="${editorChange.bind(this)}"></otter-editor>
+            @change="${editorChange.bind(this)}"></wolf-editor>
         </div>
       </div>
-      <otter-form-type-palette .items="${form.types}"></otter-form-type-palette>
-      <otter-form-property-palette
+      <wolf-form-type-palette .items="${form.types}"></wolf-form-type-palette>
+      <wolf-form-property-palette
         @change="${formPropertyChange.bind(this)}"
         .fields="${formProperty.fields}"
         .value="${formProperty.value}"
         .show="${formProperty.show}">
-      </otter-form-property-palette>
-      <otter-resizer .type="row"
+      </wolf-form-property-palette>
+      <wolf-resizer .type="row"
         .show="${rResizer.show}"
         .value="${rResizer.value}"
         .min-value="${indexHeight}"
-        @change="${rResizerChange.bind(this)}"></otter-resizer>
-      <otter-resizer .type="col"
+        @change="${rResizerChange.bind(this)}"></wolf-resizer>
+      <wolf-resizer .type="col"
         .show="${cResizer.show}"
         .value="${cResizer.value}"
         .min-value="${indexWidth}"
-        @change="${cResizerChange.bind(this)}"></otter-resizer>
-      <otter-scrollbar .type="vertical"
+        @change="${cResizerChange.bind(this)}"></wolf-resizer>
+      <wolf-scrollbar .type="vertical"
         .value="${vScrollbar.value}"
         .scroll="${vScrollbar.scroll}"
-        @change="${vScrollbarChange.bind(this)}"></otter-scrollbar>
-      <otter-scrollbar .type="horizontal"
+        @change="${vScrollbarChange.bind(this)}"></wolf-scrollbar>
+      <wolf-scrollbar .type="horizontal"
         .value="${hScrollbar.value}"
         .scroll="${hScrollbar.scroll}"
-        @change="${hScrollbarChange.bind(this)}"></otter-scrollbar>
+        @change="${hScrollbarChange.bind(this)}"></wolf-scrollbar>
     </div>
     `;
   }
