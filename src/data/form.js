@@ -30,6 +30,7 @@ const types = {
   bool: {
     fields: [],
   },
+  /*
   radio: {
     fields: ['required', 'options'],
     validator() {},
@@ -38,6 +39,7 @@ const types = {
     fields: ['required', 'options'],
     validator() {},
   },
+  */
   select: {
     fields: ['required', 'options'],
     validator() {},

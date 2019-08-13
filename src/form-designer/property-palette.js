@@ -2,7 +2,7 @@ import { html, BaseElement, component } from '../core';
 import { validate } from '../component';
 import { t } from '../locale/locale';
 
-const precisions = [1, 2, 3, 4, 5, 6];
+const precisions = [[1, '1'], [2, '2'], [3, '3'], [4, '4'], [5, '5'], [6, '6']];
 
 function valueChange(prop, v) {
   // console.log('prop:', prop, ', v:', v);
@@ -23,6 +23,7 @@ function change(type) {
 }
 
 function buildField(prop, v) {
+  // console.log('prop:', prop, ', v:', v);
   let field = '';
   if (prop === 'min' || prop === 'max') {
     field = html`

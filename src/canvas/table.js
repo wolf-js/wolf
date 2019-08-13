@@ -1,4 +1,5 @@
 import Canvas from './core';
+import { render as cellRender } from './cell';
 import { stringAt } from '../data/alphabet';
 
 function renderGrid(viewRange) {
@@ -88,7 +89,9 @@ function renderCell(ri, ci, cellBox, merge = false) {
   if (!merge && !cell.$) return;
   // if (data.merges.includes(ri, ci)) return;
 
+  cellRender(canvas, cellBox, cell);
   // console.log(ri, ci, box);
+  /*
   const box = Canvas.box(cellBox());
   const {
     bgcolor, border, font, align, valign, color, underline, textwrap,
@@ -115,6 +118,7 @@ function renderCell(ri, ci, cellBox, merge = false) {
       canvas.icon(type, box);
     }
   });
+  */
 }
 
 function renderContent(viewRange) {

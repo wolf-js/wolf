@@ -1,12 +1,5 @@
 /* global window */
 /* eslint func-names: ["error", "never"] */
-import Box from './box';
-import text from './text';
-import border from './border';
-import clipRect from './clip';
-import tag from './tag';
-import icon from './icon';
-
 function dpr() {
   return window.devicePixelRatio || 1;
 }
@@ -89,26 +82,6 @@ export default class Canvas {
     return this;
   }
 
-  border(box) {
-    border(this, box);
-  }
-
-  text(txt, box, attr = {}, textwrap = true) {
-    text(this, txt, box, attr, textwrap);
-  }
-
-  icon(type, box) {
-    icon(this, type, box);
-  }
-
-  clipRect(box, contentcb) {
-    clipRect(this, box, contentcb);
-  }
-
-  tag(box, options, key, textwrap) {
-    tag(this, box, options, key, textwrap);
-  }
-
   arc(x, y, radius, ...args) {
     this.ctx.arc(npx(x), npx(y), npx(radius), ...args);
     return this;
@@ -137,10 +110,6 @@ export default class Canvas {
 
   static create(el) {
     return new Canvas(el);
-  }
-
-  static box(options) {
-    return Box.create(options);
   }
 }
 

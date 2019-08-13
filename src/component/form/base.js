@@ -18,7 +18,7 @@ export function validate(v) {
     errors.push(t('validation.required'));
   }
 
-  if (!/^\s*$/.test(v)) {
+  if (v !== undefined && !/^\s*$/.test(v)) {
     if (type !== undefined) pattern = patterns[type];
     if (pattern !== undefined && !pattern.test(v)) {
       errors.push(t('validation.notMatch'));
