@@ -31,8 +31,8 @@ class Select extends Base {
 
   render() {
     const { $visible } = this;
-    const { value, items, width } = this.$props;
-    // console.log('$visible:', $visible);
+    const { value, items, width, offset } = this.$props;
+    if (offset) this.setOffset(offset);
     return html`
     <div class="only-text">${vText(items, value)}</div>
     <ul class="content wolf-list" .show="${$visible}" style="${{ width: width || 'auto' }}">

@@ -32,7 +32,7 @@ function buildField(prop, v) {
         @change="${valueChange.bind(this, `${prop}`)}"
         ></wolf-input>
     `;
-  } else if (prop === 'required') {
+  } else if (prop === 'required' || prop === 'multiple') {
     field = html`
       <wolf-checkbox .value="${v}"
         @change="${valueChange.bind(this, `${prop}`)}"

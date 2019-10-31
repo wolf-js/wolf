@@ -75,6 +75,7 @@ export default {
       key: 'Key',
       required: '是否必填',
       pattern: '匹配模式',
+      multiple: '多选',
       min: '最小值',
       max: '最大值',
       precision: '小数位数',

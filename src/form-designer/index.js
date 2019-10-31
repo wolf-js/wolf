@@ -10,6 +10,7 @@ import Data from '../data';
 import form from '../data/form';
 
 function setFormProperty(ri, ci, type) {
+  // console.log('type:', type);
   const { $data } = this;
   const { formProperty } = this.$state;
   if (type) {
@@ -22,6 +23,28 @@ function setFormProperty(ri, ci, type) {
     formProperty.show = false;
   }
 }
+
+function formFieldHandler(ri, ci, { type, value }) {
+  const { $data } = this;
+  const { formDatePicker, formSelect } = this.$state;
+  const { left, top } = $data.selectedCellBox;
+  const field = form.types[type];
+  const validation = $data.validation(ri, ci, type);
+  if (type === 'bool') {
+    $data.update('text', !value);
+  } else if (type === 'select') {
+    const { options } = validation.rule;
+    Object.assign(formSelect, {
+      show: true,
+      value,
+      items: options.split(',').map(it => it.split(':')),
+      offset: { left, top },
+    })
+  } else if (type === 'date') {
+    Object.assign(formDatePicker, { show: true, offset: { left, top } })
+  }
+}
+
 function overlayerMousemove(evt) {
   const { buttons, offsetX, offsetY } = evt;
   // console.log('buttons:', buttons);
@@ -69,8 +92,10 @@ function overlayerClickLeftMouseButton(evt) {
 
   if (!shiftKey) {
     $data.select.s(ri, ci);
-    const { type } = $data.selectedCell;
-    setFormProperty.call(this, ri, ci, type);
+    const { selectedCell } = $data;
+    // const { type } = $data.selectedCell;
+    setFormProperty.call(this, ri, ci, selectedCell.type);
+    formFieldHandler.call(this, ri, ci, selectedCell);
     this.update();
     mouseMoveUp(window, (e) => {
       if (e.buttons === 1 && !e.shiftKey) {
@@ -273,6 +298,16 @@ class FormDesigner extends BaseElement {
       show: false,
       value: { rule: {} },
     },
+    formDatePicker: {
+      show: false,
+      offset: { left: 0, top: 0 },
+    },
+    formSelect: {
+      show: false,
+      value: '',
+      items: [],
+      offset: { left: 0, top: 0 },
+    }
   };
 
   constructor() {
@@ -290,6 +325,7 @@ class FormDesigner extends BaseElement {
     } = $data;
     const {
       rResizer, cResizer, editor, formProperty,
+      formDatePicker, formSelect,
     } = $state;
     // console.log(':::selectedCellbox:', selectedCellBox);
     // console.log('rResizer:', rResizer, ',cResizer:', cResizer);
@@ -360,6 +396,14 @@ class FormDesigner extends BaseElement {
         .value="${hScrollbar.value}"
         .scroll="${hScrollbar.scroll}"
         @change="${hScrollbarChange.bind(this)}"></wolf-scrollbar>
+      <wolf-date-picker class="bottom left"
+        .offset="${formDatePicker.offset}"
+        .show="${formDatePicker.show}"></wolf-date-picker>
+      <wolf-select class="bottom left"
+        .offset="${formSelect.offset}"
+        .items="${formSelect.items}"
+        .value="${formSelect.value}"
+        .show="${formSelect.show}"></wolf-select>
     </div>
     `;
   }

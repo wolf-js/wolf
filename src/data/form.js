@@ -1,5 +1,5 @@
 /*
- * name, icon, fields, validator
+ * name, icon, fields, validator, trigger, multiple
  */
 const types = {
   text: {
@@ -41,7 +41,7 @@ const types = {
   },
   */
   select: {
-    fields: ['required', 'options'],
+    fields: ['required', 'multiple', 'options'],
     validator() {},
   },
   date: {

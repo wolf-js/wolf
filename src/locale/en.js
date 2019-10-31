@@ -75,6 +75,7 @@ export default {
       key: 'Key',
       required: 'Required',
       pattern: 'Pattern',
+      multiple: 'Multiple',
       min: 'Min',
       max: 'Max',
       precision: 'Prescision',
