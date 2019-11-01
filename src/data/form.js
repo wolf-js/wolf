@@ -45,8 +45,11 @@ const types = {
     validator() {},
   },
   date: {
-    fields: ['required'],
+    fields: ['required', 'format'],
     validator() {},
+    format(d) {
+      return d.format('yyyy-MM-dd');
+    },
   },
 };
 

@@ -5,6 +5,7 @@ import {
 import '../component';
 import './type-panel';
 import './property-panel';
+import './value-panel';
 import Table from '../canvas/table';
 import Data from '../data';
 import form from '../data/form';
@@ -24,9 +25,9 @@ function setFormProperty(ri, ci, type) {
   }
 }
 
-function formFieldHandler(ri, ci, { type, value }) {
+function setFormValue(ri, ci, { type, value }) {
   const { $data } = this;
-  const { formDatePicker, formSelect } = this.$state;
+  const { formValue } = this.$state;
   const { left, top } = $data.selectedCellBox;
   // const field = form.types[type];
   const validation = $data.validation(ri, ci, type);
@@ -34,14 +35,15 @@ function formFieldHandler(ri, ci, { type, value }) {
     $data.update('text', !value);
   } else if (type === 'select') {
     const { options } = validation.rule;
-    Object.assign(formSelect, {
+    Object.assign(formValue, {
+      type,
       show: true,
       value,
       items: options.split(',').map(it => it.split(':')),
       offset: { left, top },
     });
   } else if (type === 'date') {
-    Object.assign(formDatePicker, { show: true, offset: { left, top } });
+    Object.assign(formValue, { type, show: true, offset: { left, top } });
   }
 }
 
@@ -93,18 +95,20 @@ function overlayerClickLeftMouseButton(evt) {
   if (!shiftKey) {
     $data.select.s(ri, ci);
     const { selectedCell } = $data;
-    // const { type } = $data.selectedCell;
-    setFormProperty.call(this, ri, ci, selectedCell.type);
-    formFieldHandler.call(this, ri, ci, selectedCell);
+    const { type } = selectedCell;
+    setFormProperty.call(this, ri, ci, type);
+    setFormValue.call(this, ri, ci, selectedCell);
     this.update();
     mouseMoveUp(window, (e) => {
-      if (e.buttons === 1 && !e.shiftKey) {
-        ({ ri, ci } = $data.cellBoxAndIndex(e.offsetX, e.offsetY));
-        if (last.ri !== ri || last.ci !== ci) {
-          $data.select.e(ri, ci);
-          this.update();
-          last.ri = ri;
-          last.ci = ci;
+      if (e.target === evt.target) {
+        if (e.buttons === 1 && !e.shiftKey) {
+          ({ ri, ci } = $data.cellBoxAndIndex(e.offsetX, e.offsetY));
+          if (last.ri !== ri || last.ci !== ci) {
+            $data.select.e(ri, ci);
+            this.update();
+            last.ri = ri;
+            last.ci = ci;
+          }
         }
       }
     }, () => {});
@@ -192,6 +196,14 @@ function formPropertyChange(type) {
   const { formProperty } = this.$state;
   formProperty.show = false;
   this.$data.updateValidation(formProperty.value, type === 'remove');
+  this.update();
+}
+
+function formValueChange(v) {
+  // console.log('v:', v);
+  const { formValue } = this.$state;
+  formValue.show = false;
+  this.$data.update('text', formValue.type === 'date' ? v[1].format('yyyy-MM-dd') : v);
   this.update();
 }
 
@@ -298,11 +310,7 @@ class FormDesigner extends BaseElement {
       show: false,
       value: { rule: {} },
     },
-    formDatePicker: {
-      show: false,
-      offset: { left: 0, top: 0 },
-    },
-    formSelect: {
+    formValue: {
       show: false,
       value: '',
       items: [],
@@ -325,7 +333,7 @@ class FormDesigner extends BaseElement {
     } = $data;
     const {
       rResizer, cResizer, editor, formProperty,
-      formDatePicker, formSelect,
+      formValue,
     } = $state;
     // console.log(':::selectedCellbox:', selectedCellBox);
     // console.log('rResizer:', rResizer, ',cResizer:', cResizer);
@@ -351,6 +359,10 @@ class FormDesigner extends BaseElement {
       style: selectedCell.style,
       merge: [select.merged, !select.multiple],
     };
+    const cstyle = {
+      left: indexWidth,
+      top: indexHeight,
+    };
     // console.log('formProperty:', formProperty);
     return html`
     <wolf-toolbar .value="${toolbarValue}" @change="${toolbarChange.bind(this)}"></wolf-toolbar>
@@ -370,6 +382,16 @@ class FormDesigner extends BaseElement {
             .style="${editor.style}"
             @change="${editorChange.bind(this)}"></wolf-editor>
         </div>
+      </div>
+      <div class="overlayer" style="${cstyle}">
+        <wolf-form-value-panel class="bottom left"
+          .type="${formValue.type}"
+          .items="${formValue.items}"
+          .value="${formValue.value}"
+          .offset="${formValue.offset}"
+          .show="${formValue.show}"
+          @change="${formValueChange.bind(this)}">
+        </wolf-form-value-panel>
       </div>
       <wolf-form-type-panel .items="${form.types}"></wolf-form-type-panel>
       <wolf-form-property-panel
@@ -396,14 +418,6 @@ class FormDesigner extends BaseElement {
         .value="${hScrollbar.value}"
         .scroll="${hScrollbar.scroll}"
         @change="${hScrollbarChange.bind(this)}"></wolf-scrollbar>
-      <wolf-date-picker class="bottom left"
-        .offset="${formDatePicker.offset}"
-        .show="${formDatePicker.show}"></wolf-date-picker>
-      <wolf-select class="bottom left" style="position: absolute;"
-        .offset="${formSelect.offset}"
-        .items="${formSelect.items}"
-        .value="${formSelect.value}"
-        .show="${formSelect.show}"></wolf-select>
     </div>
     `;
   }

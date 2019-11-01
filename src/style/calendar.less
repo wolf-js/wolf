@@ -15,7 +15,7 @@
       padding: 0.5em 0.75em;
       display: inline-block;
       border-radius: 4px;
-      box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e9e9e9;
 
       &:hover, &.active {
         background: rgba(0, 0, 0, .08);
@@ -37,18 +37,19 @@
     }
 
     th {
-      text-align: right;
-      padding: 0.75em;
+      text-align: center;
+      padding: 0.75em 0;
     }
 
     td > .cell {
       border-top: 3px solid #e9e9e9;
       margin: 0 3px 1px;
-      padding: .75em;
+      padding: .75em 0;
       line-height: 1em;
+      text-align: center;
 
       &:hover {
-        background: #ecf6fd;
+        background-color: #ecf6fd;
       }
 
       &.active, &.active:hover {
@@ -67,8 +68,15 @@
       }
 
       > .cell-content {
+        text-align: left;
         min-height: 5em;
       }
+    }
+  }
+
+  &.picker {
+    .body td > .cell {
+      font-weight: bold;
     }
   }
 }

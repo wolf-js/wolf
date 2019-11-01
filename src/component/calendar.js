@@ -52,10 +52,10 @@ const typeFuncs = {
 function cellRender(type, v) {
   const cr = this.$props.cellRender;
   const ccr = this.$props.cellContentRender;
-  if (cr) return cr(type, v);
   let title = v;
   if (type === 'day') title = v.getDate();
   if (type === 'month') title = t('calendar.months')[v];
+  if (cr) return cr(type, v, title);
   return html`
   <div class="cell-title">${title}</div>
   <div class="cell-content">${ccr ? ccr(type, v) : ''}</div>
