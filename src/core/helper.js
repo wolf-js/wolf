@@ -36,7 +36,6 @@ export function mouseMoveUp(target, movefunc, upfunc) {
   bind(target, 'mousemove', movefunc);
   const t = target;
   t.xEvtUp = (evt) => {
-    // console.log('mouseup>>>');
     unbind(target, 'mousemove', movefunc);
     unbind(target, 'mouseup', target.xEvtUp);
     upfunc(evt);

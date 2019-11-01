@@ -50,9 +50,8 @@ export default class PropExpr extends Expr {
         el.innerHTML = value;
       } else if (isInputValue) {
         el.value = value;
-      } else {
-        setElementProp(el, name, value);
       }
+      setElementProp(el, name, value);
       super.update(value);
       return true;
     }
