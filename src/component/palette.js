@@ -26,8 +26,8 @@ function buildThemeColors() {
   return themeColors.map(colors => html`<tr>${buildTds.call(this, colors)}</tr>`);
 }
 
-export default @component('wolf-color-palette')
-class ColorPalette extends BaseElement {
+export default @component('wolf-palette')
+class Palette extends BaseElement {
   render() {
     return html`
     <table>

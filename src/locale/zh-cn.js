@@ -57,7 +57,7 @@ export default {
     concat: '字符拼接',
   },
   form: {
-    palette: '表单类型',
+    panel: '表单类型',
     type: {
       text: '文本',
       bool: '布尔值',

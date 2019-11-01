@@ -3,8 +3,8 @@ import {
   html, component, BaseElement, element, mouseMoveUp, bind,
 } from '../core';
 import '../component';
-import './type-palette';
-import './property-palette';
+import './type-panel';
+import './property-panel';
 import Table from '../canvas/table';
 import Data from '../data';
 import form from '../data/form';
@@ -371,13 +371,13 @@ class FormDesigner extends BaseElement {
             @change="${editorChange.bind(this)}"></wolf-editor>
         </div>
       </div>
-      <wolf-form-type-palette .items="${form.types}"></wolf-form-type-palette>
-      <wolf-form-property-palette
+      <wolf-form-type-panel .items="${form.types}"></wolf-form-type-panel>
+      <wolf-form-property-panel
         @change="${formPropertyChange.bind(this)}"
         .fields="${formProperty.fields}"
         .value="${formProperty.value}"
         .show="${formProperty.show}">
-      </wolf-form-property-palette>
+      </wolf-form-property-panel>
       <wolf-resizer .type="row"
         .show="${rResizer.show}"
         .value="${rResizer.value}"
@@ -399,7 +399,7 @@ class FormDesigner extends BaseElement {
       <wolf-date-picker class="bottom left"
         .offset="${formDatePicker.offset}"
         .show="${formDatePicker.show}"></wolf-date-picker>
-      <wolf-select class="bottom left"
+      <wolf-select class="bottom left" style="position: absolute;"
         .offset="${formSelect.offset}"
         .items="${formSelect.items}"
         .value="${formSelect.value}"

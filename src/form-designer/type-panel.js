@@ -33,11 +33,11 @@ function buildItems() {
   });
 }
 
-export default @component('wolf-form-type-palette')
-class FormTypePalette extends BaseElement {
+export default @component('wolf-form-type-panel')
+class FormTypePanel extends BaseElement {
   render() {
     return html`
-    <div class="header">${t('form.palette')}</div> 
+    <div class="header">${t('form.panel')}</div> 
     <ul class="wolf-list">
       ${buildItems.call(this)}
     </ul>

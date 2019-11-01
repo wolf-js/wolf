@@ -64,8 +64,8 @@ function buildField(prop, v) {
   `;
 }
 
-export default @component('wolf-form-property-palette')
-class FormPropertyPalette extends BaseElement {
+export default @component('wolf-form-property-panel')
+class FormPropertyPanel extends BaseElement {
   render() {
     const { value, fields } = this.$props;
     const { ref, key, rule } = value;

@@ -57,7 +57,7 @@ export default {
     concat: 'Concat',
   },
   form: {
-    palette: 'Form Palette',
+    panel: 'Form Panel',
     type: {
       text: 'Text',
       bool: 'Boolean',
