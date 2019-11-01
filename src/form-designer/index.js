@@ -28,7 +28,7 @@ function formFieldHandler(ri, ci, { type, value }) {
   const { $data } = this;
   const { formDatePicker, formSelect } = this.$state;
   const { left, top } = $data.selectedCellBox;
-  const field = form.types[type];
+  // const field = form.types[type];
   const validation = $data.validation(ri, ci, type);
   if (type === 'bool') {
     $data.update('text', !value);
@@ -39,9 +39,9 @@ function formFieldHandler(ri, ci, { type, value }) {
       value,
       items: options.split(',').map(it => it.split(':')),
       offset: { left, top },
-    })
+    });
   } else if (type === 'date') {
-    Object.assign(formDatePicker, { show: true, offset: { left, top } })
+    Object.assign(formDatePicker, { show: true, offset: { left, top } });
   }
 }
 
@@ -307,7 +307,7 @@ class FormDesigner extends BaseElement {
       value: '',
       items: [],
       offset: { left: 0, top: 0 },
-    }
+    },
   };
 
   constructor() {

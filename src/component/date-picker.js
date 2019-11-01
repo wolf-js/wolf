@@ -9,7 +9,7 @@ function cellRender(type, v) {
 export default @component('wolf-date-picker')
 class DatePicker extends Dropdown {
   render() {
-    const { offset } = this.$props
+    const { offset } = this.$props;
     if (offset) this.setOffset(offset);
     return html`
     <wolf-calendar .cell-render="${cellRender.bind(this)}"
