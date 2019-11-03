@@ -79,7 +79,9 @@ export default {
       min: '最小值',
       max: '最大值',
       precision: '小数位数',
+      url: 'Url',
       options: '选项列表',
+      format: '格式',
     },
   },
   validation: {

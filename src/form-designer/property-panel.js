@@ -2,8 +2,6 @@ import { html, BaseElement, component } from '../core';
 import { validate } from '../component';
 import { t } from '../locale/locale';
 
-const precisions = [[1, '1'], [2, '2'], [3, '3'], [4, '4'], [5, '5'], [6, '6']];
-
 function valueChange(prop, v) {
   // console.log('prop:', prop, ', v:', v);
   const { value } = this.$props;
@@ -22,42 +20,50 @@ function change(type) {
   }
 }
 
-function buildField(prop, v) {
-  // console.log('prop:', prop, ', v:', v);
-  let field = '';
-  if (prop === 'min' || prop === 'max') {
+function buildField([prop, option], v) {
+  // console.log('prop:', prop, ', option:', option, ', v:', v);
+  let field = null;
+  let nv = v;
+  const isString = typeof option === 'string';
+  const type = isString ? option : option.type;
+  if (!isString) {
+    if (v === undefined && option.defaultValue) {
+      nv = option.defaultValue;
+      this.$props.value.rule[prop] = nv;
+    }
+  }
+  if (type === 'checkbox') {
     field = html`
-      <wolf-input .type="number" .max-length="6"
-        .value="${v}" .width="80px"
-        @change="${valueChange.bind(this, `${prop}`)}"
-        ></wolf-input>
+    <wolf-checkbox .value="${nv}"
+      @change="${valueChange.bind(this, `${prop}`)}"
+      ></wolf-checkbox>
     `;
-  } else if (prop === 'required' || prop === 'multiple') {
+  } else if (type === 'select') {
     field = html`
-      <wolf-checkbox .value="${v}"
-        @change="${valueChange.bind(this, `${prop}`)}"
-        ></wolf-checkbox>
+    <wolf-select class="bottom left"
+      .value="${nv}"
+      .hint="${option.hint || ''}"
+      @change="${valueChange.bind(this, `${prop}`)}"
+      .width="${option.width || '100%'}"
+      .items="${option.items}"></wolf-form-select>
     `;
-  } else if (prop === 'precision') {
+  } else if (type === 'textarea') {
     field = html`
-      <wolf-select class="bottom left" .value="${v || 2}"
-        @change="${valueChange.bind(this, `${prop}`)}"
-        .width="46px" .items="${precisions}"></wolf-form-select>
-    `;
-  } else if (prop === 'options') {
-    field = html`
-      <wolf-input .value="${v}" .width="80px" .required="true" .hint="k:na,k1:xx"
-        @change="${valueChange.bind(this, `${prop}`)}"></wolf-input>
+    <wolf-textarea .hint="${option.hint}" .value="${nv}"
+      @change="${valueChange.bind(this, `${prop}`)}"></wolf-textarea>
     `;
   } else {
     field = html`
-      <wolf-input .value="${v}" .width="80px"
-        @change="${valueChange.bind(this, `${prop}`)}"></wolf-input>
+    <wolf-input .value="${nv}"
+      .width="${option.width || '80px'}"
+      .max-length="${option.maxLength || 200}"
+      @change="${valueChange.bind(this, `${prop}`)}"></wolf-input>
     `;
   }
+  // console.log('field:', field);
   const label = t(`form.property.${prop}`);
   return html`
-    <div class="field">
+    <div class="field" .key="${prop}">
       <label style="width: 60px;">${label}</label>
       ${field}
     </div>
@@ -69,10 +75,6 @@ class FormPropertyPanel extends BaseElement {
   render() {
     const { value, fields } = this.$props;
     const { ref, key, rule } = value;
-    // set precision default value is 2
-    if (fields && fields.includes('precision')) {
-      rule.precision = rule.precision || 2;
-    }
     // console.log(ref, key, 'rule:', rule);
     const title = t('form.property.title');
     return html`
@@ -94,7 +96,7 @@ class FormPropertyPanel extends BaseElement {
           @change="${valueChange.bind(this, 'key')}"
           .value="${key}" .width="80px"></wolf-input>
       </div>
-      ${fields.map(it => buildField.call(this, it, rule[it]))}
+      ${Object.entries(fields).map(it => buildField.call(this, it, rule[it[0]]))}
       <div class="wolf-buttons">
         <div class="wolf-button primary"
           @click="${change.bind(this, 'save')}">

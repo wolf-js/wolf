@@ -10,13 +10,15 @@ import Table from '../canvas/table';
 import Data from '../data';
 import form from '../data/form';
 
+const formTypes = form.types;
+
 function setFormProperty(ri, ci, type) {
   // console.log('type:', type);
   const { $data } = this;
   const { formProperty } = this.$state;
   if (type) {
     Object.assign(formProperty, {
-      fields: form.types[type].fields,
+      fields: formTypes[type].fields,
       value: $data.validation(ri, ci, type),
       show: true,
     });
@@ -29,21 +31,27 @@ function setFormValue(ri, ci, { type, value }) {
   const { $data } = this;
   const { formValue } = this.$state;
   const { left, top } = $data.selectedCellBox;
-  // const field = form.types[type];
   const validation = $data.validation(ri, ci, type);
   if (type === 'bool') {
     $data.update('text', !value);
   } else if (type === 'select') {
     const { options } = validation.rule;
+    // console.log('validation:', validation);
     Object.assign(formValue, {
       type,
       show: true,
       value,
-      items: options.split(',').map(it => it.split(':')),
+      validation,
+      items: JSON.parse(options),
       offset: { left, top },
     });
   } else if (type === 'date') {
-    Object.assign(formValue, { type, show: true, offset: { left, top } });
+    Object.assign(formValue, {
+      type,
+      show: true,
+      validation,
+      offset: { left, top },
+    });
   }
 }
 
@@ -200,10 +208,14 @@ function formPropertyChange(type) {
 }
 
 function formValueChange(v) {
-  // console.log('v:', v);
   const { formValue } = this.$state;
   formValue.show = false;
-  this.$data.update('text', formValue.type === 'date' ? v[1].format('yyyy-MM-dd') : v);
+  if (arguments.length > 1) {
+    const { type, validation } = formValue;
+    const { format } = formTypes[type];
+    const nv = format ? format(v, validation.rule) : v;
+    this.$data.update('text', nv);
+  }
   this.update();
 }
 
@@ -390,10 +402,11 @@ class FormDesigner extends BaseElement {
           .value="${formValue.value}"
           .offset="${formValue.offset}"
           .show="${formValue.show}"
+          @clickoutside="${formValueChange.bind(this)}"
           @change="${formValueChange.bind(this)}">
         </wolf-form-value-panel>
       </div>
-      <wolf-form-type-panel .items="${form.types}"></wolf-form-type-panel>
+      <wolf-form-type-panel .items="${formTypes}"></wolf-form-type-panel>
       <wolf-form-property-panel
         @change="${formPropertyChange.bind(this)}"
         .fields="${formProperty.fields}"

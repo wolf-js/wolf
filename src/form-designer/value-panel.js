@@ -1,5 +1,5 @@
 import {
-  component, html, BaseElement, bindClickoutside, unbindClickoutside,
+  component, html, BaseElement,
 } from '../core';
 
 function onChange(...args) {
@@ -18,26 +18,15 @@ export default @component('wolf-form-value-panel')
 class FormValuePanel extends BaseElement {
   render() {
     const {
-      offset, type, items, value, show,
+      offset, type, items,
     } = this.$props;
     if (offset) this.setOffset(offset);
-
-    // console.log('$props:', this.$props);
-    if (show === true) {
-      let firstShow = true;
-      bindClickoutside(this, () => {
-        if (firstShow) firstShow = false;
-        else this.change();
-      });
-    } else {
-      unbindClickoutside(this);
-    }
 
     // console.log('type:', type, items, value, offset);
     return html`
     <wolf-calendar class="picker"
       .show="${type === 'date'}"
-      .cell-render="${(type, v, title) => title}"
+      .cell-render="${(p1, p2, title) => title}"
       @change="${onChange.bind(this)}"
       ></wolf-calendar>
     <ul class="wolf-list" .show="${type === 'select'}">

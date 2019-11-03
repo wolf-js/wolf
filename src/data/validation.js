@@ -46,6 +46,10 @@ function findByRule(rule) {
   return this.$.find(it => helper.equals(it.rule, rule));
 }
 
+function findByRef(ref) {
+  return this.$.find(it => it.includes(ref));
+}
+
 function add(ref, key, rule) {
   const item = findByRule.call(this, rule);
   if (item !== undefined) {
@@ -55,9 +59,15 @@ function add(ref, key, rule) {
   }
 }
 
-function remove() {
-  const index = this.$.find(it => it.refs.length === 0);
-  if (index > 0) this.$.splice(index, 1);
+function remove(ref) {
+  const item = findByRef.call(this, ref);
+  if (item !== undefined) {
+    if (item.refs.length > 1) {
+      item.remove(ref);
+    } else {
+      this.$.splice(this.$.findIndex(it => it.includes(ref)), 1);
+    }
+  }
 }
 
 export default class Validations extends Base {
@@ -72,7 +82,7 @@ export default class Validations extends Base {
 
   find(ri, ci, type) {
     const ref = xy2expr(ci, ri);
-    const v = this.$.find(it => it.includes(ref));
+    const v = findByRef.call(this, ref);
     if (v !== undefined) {
       return { ref, key: v.findKey(ref), rule: v.rule };
     }

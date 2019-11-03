@@ -1,4 +1,5 @@
 import './input';
+import './textarea';
 import './checkbox';
 import './select';
 

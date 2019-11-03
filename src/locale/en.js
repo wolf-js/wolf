@@ -79,7 +79,9 @@ export default {
       min: 'Min',
       max: 'Max',
       precision: 'Prescision',
+      url: 'Url',
       options: 'Options',
+      format: 'Format',
     },
   },
   validation: {
