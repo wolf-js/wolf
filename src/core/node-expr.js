@@ -7,8 +7,13 @@ function cc() {
   return document.createComment('');
 }
 
-function insert(node) {
+function insertNode(node) {
   this.e.parentNode.insertBefore(node, this.e);
+}
+
+function replaceNode(newNode) {
+  const { parentNode, previousElementSibling } = this.e;
+  parentNode.replaceChild(newNode, previousElementSibling);
 }
 
 export default class NodeExpr extends Expr {
@@ -43,28 +48,30 @@ export default class NodeExpr extends Expr {
     if (node !== s) {
       node.textContent = value;
     } else {
-      insert.call(this, document.createTextNode(value));
+      insertNode.call(this, document.createTextNode(value));
     }
     this.v = value;
   }
 
   updateNode(value) {
     if (this.v !== value) {
-      insert.call(this, value);
+      insertNode.call(this, value);
       this.v = value;
     }
   }
 
   // value: Template
   updateTemplate({ strings, values }) {
-    if (this.v === undefined) {
+    const { vstrings, v } = this;
+    const isSameStrings = vstrings === strings;
+    if (v === undefined || !isSameStrings) {
       const t = NodeExpr.getTemplateExpr(strings);
       const content = t.clone();
-      // console.log('templateExprs:', templateExprs);
-      // update before insert for connectedCallback
       t.update(values);
-      insert.call(this, content);
+      if (v === undefined) insertNode.call(this, content);
+      else replaceNode.call(this, content);
       this.v = t;
+      this.vstrings = strings;
     } else {
       this.v.update(values);
     }
@@ -78,7 +85,7 @@ export default class NodeExpr extends Expr {
 
     let lastIndex = 0;
     let expr;
-    // console.log('value:', value);
+    // console.log('value:', value, this.v);
     value.forEach((item, index) => {
       expr = this.v[index];
       // console.log('index:', expr,  index, item);
