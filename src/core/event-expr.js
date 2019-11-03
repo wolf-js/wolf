@@ -22,7 +22,12 @@ export default class EventExpr extends Expr {
     if (this.isClickoutside) {
       // console.log('::::::::::el:', el, e);
       if (el.style.display === 'block') {
-        eventCallback(e, v);
+        if (this.firstClick) {
+          this.firstClick = false;
+        } else {
+          eventCallback(e, v);
+          this.firstClick = true;
+        }
       }
     } else {
       eventCallback(e, v);
@@ -36,6 +41,7 @@ export default class EventExpr extends Expr {
     this.el = element;
     this.name = ename;
     this.actions = actions;
+    this.firstClick = true;
   }
 
   get isClickoutside() {
