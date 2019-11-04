@@ -74,6 +74,11 @@ const types = {
       },
     },
     validator() {},
+    value(key, { options }) {
+      const option = JSON.parse(options).find(it => it[0] === key);
+      if (option) return option[1];
+      return key;
+    },
   },
   date: {
     fields: {

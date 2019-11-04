@@ -1,5 +1,6 @@
 import cellEval from './cell-evaluation';
 import formula from './formula';
+import form from './form';
 import helper from './helper';
 import { pt2px } from './font';
 
@@ -18,9 +19,10 @@ function getCellOrNew() {
 }
 
 export default class Cell {
-  constructor({ rows }, styles, ri, ci, mode = 'read') {
+  constructor({ rows }, styles, validations, ri, ci, mode = 'read') {
     this.styles = styles;
     this.rows = rows;
+    this.validations = validations;
     this.ri = ri;
     this.ci = ci;
     if (mode === 'read') {
@@ -31,7 +33,7 @@ export default class Cell {
   }
 
   get value() {
-    const { $ } = this;
+    const { $, type } = this;
     if (!$) return undefined;
     let { text } = $;
     if (text) {
@@ -39,6 +41,12 @@ export default class Cell {
         const c = getCell.call(this, y, x);
         return '' || (c && c.text);
       });
+      if (type) {
+        const formType = form.types[type];
+        if (formType.value) {
+          text = formType.value(text, this.validation.rule);
+        }
+      }
       this.$.value = text;
     }
     return text;
@@ -72,6 +80,10 @@ export default class Cell {
   get text() {
     const { $ } = this;
     return $ ? $.text : '';
+  }
+
+  get validation() {
+    return this.validations.find(this.ri, this.ci, this.type);
   }
 
   get type() {
@@ -109,11 +121,11 @@ export default class Cell {
     }
   }
 
-  static read(data, styles, ri, ci) {
-    return new Cell(data, styles, ri, ci, 'read');
+  static read(data, styles, validations, ri, ci) {
+    return new Cell(data, styles, validations, ri, ci, 'read');
   }
 
-  static write(data, styles, ri, ci) {
-    return new Cell(data, styles, ri, ci, 'write');
+  static write(data, styles, validations, ri, ci) {
+    return new Cell(data, styles, validations, ri, ci, 'write');
   }
 }

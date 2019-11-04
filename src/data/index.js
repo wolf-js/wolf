@@ -182,7 +182,7 @@ export default class Data {
   // attr: merge | border | style...
   update(attr, value) {
     const {
-      select, $, styles, merges,
+      select, $, styles, merges, validations,
     } = this;
     if (attr === 'merge') {
       merges.update(select.range, value ? 'add' : 'remove');
@@ -190,11 +190,11 @@ export default class Data {
       border.parse(this, value, (
         ri, ci, v,
       ) => {
-        Cell.write($, styles, ri, ci).update(attr, v);
+        Cell.write($, styles, validations, ri, ci).update(attr, v);
       });
     } else {
       select.each((ri, ci) => {
-        Cell.write($, styles, ri, ci).update(attr, value);
+        Cell.write($, styles, validations, ri, ci).update(attr, value);
       });
     }
   }
@@ -229,7 +229,7 @@ export default class Data {
   }
 
   cell(ri, ci) {
-    return Cell.read(this.$, this.styles, ri, ci);
+    return Cell.read(this.$, this.styles, this.validations, ri, ci);
   }
 
   // cellBox(range)
@@ -299,7 +299,7 @@ export default class Data {
     this.validations.update({ ref, key, rule }, isRemove);
     const [ci, ri] = expr2xy(ref);
     // console.log('ri:', ri, ', ci:', ci, isRemove ? undefined : rule.type);
-    Cell.write(this.$, this.styles, ri, ci)
+    Cell.write(this.$, this.styles, this.validations, ri, ci)
       .update('type', isRemove ? undefined : rule.type);
     // console.log('data:', this);
   }
