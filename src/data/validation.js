@@ -83,14 +83,14 @@ export default class Validations extends Base {
   find(ri, ci, type) {
     const ref = xy2expr(ci, ri);
     const v = findByRef.call(this, ref);
-    if (v !== undefined) {
+    if (v !== undefined && type === v.rule.type) {
       return { ref, key: v.findKey(ref), rule: v.rule };
     }
     return { ref, key: ref, rule: { type } };
   }
 
-  update({ ref, key, rule }, isRemove = false) {
-    if (isRemove) remove.call(this, ref);
-    else add.call(this, ref, key, rule);
+  update({ ref, key, rule }) {
+    remove.call(this, ref);
+    add.call(this, ref, key, rule);
   }
 }
