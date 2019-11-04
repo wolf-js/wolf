@@ -96,7 +96,7 @@ export default class NodeExpr extends Expr {
       expr.update(item);
       lastIndex = index;
     });
-    lastIndex += 1;
+    if (value.length > 0) lastIndex += 1;
     // console.log('v:', this.v, lastIndex);
     if (lastIndex < this.v.length) {
       const { s } = this.v[lastIndex];
