@@ -12,6 +12,7 @@ class Textarea extends BaseElement {
     return html`
     <textarea 
       @input="${inputHandler.bind(this)}"
+      @change.stop="${inputHandler.bind(this)}"
       .value="${value || ''}"
       placeholder="${hint || ''}"
       autocomplete="off"></textarea>
