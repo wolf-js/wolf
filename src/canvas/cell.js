@@ -1,29 +1,37 @@
-function renderBorder(canvas, border, w, h) {
+function renderBorder() {
+  const { canvas, data, box } = this;
+  const { width, height } = box;
+  const { border } = data.style;
+  if (!border) return;
   const {
     top, right, bottom, left,
   } = border;
   canvas.saveRestore(() => {
     if (top) {
       canvas.lineStyle(...top)
-        .line([0, 0], [w, 0]);
+        .line([0, 0], [width, 0]);
     }
     if (right) {
       canvas.lineStyle(...right)
-        .line([w, 0], [w, h]);
+        .line([width, 0], [width, height]);
     }
     if (bottom) {
       canvas.lineStyle(...bottom)
-        .line([0, h], [w, h]);
+        .line([0, height], [width, height]);
     }
     if (left) {
       canvas.lineStyle(...left)
-        .line([0, 0], [0, h]);
+        .line([0, 0], [0, height]);
     }
   });
 }
 
 // type: bool | select | date
-function renderIcon(canvas, type, w, h) {
+function renderIcon() {
+  const { canvas, data, box } = this;
+  const [w, h] = [box.width, box.height];
+  const { type } = data;
+  if (type === undefined) return;
   canvas.saveRestore(() => {
     if (type === 'bool') {
       canvas.attr({ strokeStyle: '#999999', lineWidth: 2 })
@@ -109,7 +117,12 @@ function textLine(type, align, valign, x, y, w, h) {
   ];
 }
 
-function renderText(canvas, txt, style, w, h) {
+function renderText() {
+  const { canvas, box, data } = this;
+  const [w, h] = [box.width, box.height];
+  const { value, style } = data;
+  if (!value) return;
+  const txt = value;
   const {
     align, valign, font, color, underline, textwrap, padding,
   } = style;
@@ -159,40 +172,36 @@ function renderText(canvas, txt, style, w, h) {
   });
 }
 
-// cellBox: function
-export function render(canvas, cellBox, cell) {
-  const {
-    left, top, width, height,
-  } = cellBox();
-  const [x, y] = [left, top];
-
-  const { value, type, style } = cell;
-  const { border, bgcolor } = style;
-  if (border) {
-    renderBorder(canvas, border, width, height);
+export default class TableCell {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.box = null;
+    this.data = null;
+    this.iconBoxes = new Map();
   }
 
-  // clip
-  canvas.saveRestore(() => {
-    canvas.translate(x, y);
-    // border
-    if (border) {
-      renderBorder(canvas, border);
-    }
-    // clip
-    canvas.attr({ fillStyle: bgcolor || '#fff' })
-      .rect(1, 1, width - 2, height - 2)
-      .clip()
-      .fill();
-    // render content
-    // console.log('value:', value, ', type:', type);
-    if (value) {
-      renderText(canvas, value, style, width, height);
-    }
-    if (type !== undefined) {
-      renderIcon(canvas, type, width, height);
-    }
-  });
-}
+  render(box, cell) {
+    this.box = box;
+    this.data = cell;
+    const { canvas } = this;
+    const {
+      width, height, left, top,
+    } = box;
 
-export default {};
+    // clip
+    canvas.saveRestore(() => {
+      canvas.translate(left, top);
+      // border
+      renderBorder.call(this);
+      // clip
+      canvas.attr({ fillStyle: cell.style.bgcolor || '#fff' })
+        .rect(1, 1, width - 2, height - 2)
+        .clip()
+        .fill();
+      // render content
+      // console.log('value:', value, ', type:', type);
+      renderText.call(this);
+      renderIcon.call(this);
+    });
+  }
+}

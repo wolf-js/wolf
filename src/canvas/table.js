@@ -1,5 +1,5 @@
 import Canvas from './core';
-import { render as cellRender } from './cell';
+import TableCell from './cell';
 import { stringAt } from '../data/alphabet';
 
 function renderGrid(viewRange) {
@@ -84,12 +84,12 @@ function renderHeader(viewRange) {
 }
 
 function renderCell(ri, ci, cellBox, merge = false) {
-  const { canvas, data } = this;
-  const cell = data.cell(ri, ci);
+  const cell = this.data.cell(ri, ci);
   if (!merge && !cell.$) return;
   // if (data.merges.includes(ri, ci)) return;
 
-  cellRender(canvas, cellBox, cell);
+  this.cell.render(cellBox(), cell);
+  // cellRender(canvas, cellBox, cell);
   // console.log(ri, ci, box);
   /*
   const box = Canvas.box(cellBox());
@@ -141,6 +141,7 @@ function renderContent(viewRange) {
 export default class Table {
   constructor(el, data) {
     this.canvas = Canvas.create(el);
+    this.cell = new TableCell(this.canvas);
     this.data = data;
   }
 
