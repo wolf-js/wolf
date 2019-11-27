@@ -30,28 +30,27 @@ function setFormProperty(ri, ci, type) {
 function setFormValue(ri, ci, { type, value }) {
   const { $data } = this;
   const { formValue } = this.$state;
-  const { left, top } = $data.selectedCellBox;
+  const {
+    left, top, height,
+  } = $data.selectedCellBox;
   const validation = $data.validation(ri, ci, type);
+  const nvalue = {
+    type,
+    show: true,
+    offset: { left, top: top + height },
+  };
   if (type === 'bool') {
     $data.update('text', !value);
   } else if (type === 'select') {
     const { options } = validation.rule;
     // console.log('validation:', validation);
-    Object.assign(formValue, {
-      type,
-      show: true,
+    Object.assign(formValue, nvalue, {
       value,
       validation,
       items: JSON.parse(options),
-      offset: { left, top },
     });
   } else if (type === 'date') {
-    Object.assign(formValue, {
-      type,
-      show: true,
-      validation,
-      offset: { left, top },
-    });
+    Object.assign(formValue, nvalue, { validation });
   }
 }
 
