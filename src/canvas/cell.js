@@ -29,26 +29,35 @@ function renderBorder() {
 // type: bool | select | date
 function renderIcon() {
   const { canvas, data, box } = this;
-  const [w, h] = [box.width, box.height];
+  const { width, height } = box;
   const { type } = data;
-  if (type === undefined) return;
+  if (type === undefined) {
+    this.removeIconBox();
+    return;
+  }
   canvas.saveRestore(() => {
     if (type === 'bool') {
+      const [x, y, w, h] = [width / 2 - 6, height / 2 - 6, 12, 12];
+      this.addIconBox(x, y, w, h);
       canvas.attr({ strokeStyle: '#999999', lineWidth: 2 })
-        .roundRect(w / 2 - 6, h / 2 - 6, 12, 12, 2)
-        .stroke();
+        .roundRect(x, y, w, h, 2)
+        .stoke();
     } else if (type === 'select') {
+      const [x, y, w, h] = [width - 20, height - 20, 12, 12];
+      this.addIconBox(x, y, w, h);
       canvas.attr({ fillStyle: '#e6e6e6' })
-        .translate(w - 20, h - 20)
+        .translate(x, y)
         .beginPath()
         .moveTo(2, 4)
-        .lineTo(12, 4)
-        .lineTo(7, 12)
+        .lineTo(w, 4)
+        .lineTo(7, w)
         .closePath()
         .fill();
     } else if (type === 'date') {
+      const [x, y, w, h] = [width - 20, height - 20, 12, 12];
+      this.addIconBox(x, y, w, h);
       canvas.attr({ strokeStyle: '#e6e6e6', lineWidth: 2 })
-        .translate(w - 20, h - 20)
+        .translate(x, y)
         .line([5, 2], [5, 5])
         .line([11, 2], [11, 5])
         .line([2, 7], [14, 7])
@@ -177,7 +186,39 @@ export default class TableCell {
     this.canvas = canvas;
     this.box = null;
     this.data = null;
+    // { ri_ci: { left, top, width, height } }
     this.iconBoxes = new Map();
+  }
+
+  get iconBoxKey() {
+    const { ri, ci } = this.data;
+    return `${ri}_${ci}`;
+  }
+
+  hasIconBox(ri, ci) {
+    return this.iconBoxes.has(`${ri}_${ci}`);
+  }
+
+  // ox: offsetx, oy: offsety
+  inIconBoxes(ri, ci, ox, oy) {
+    if (this.hasIconBox(ri, ci)) {
+      const [x, y, w, h] = this.getIconBox(ri, ci);
+      if (ox >= x && ox <= (x + w) && oy >= y && oy <= (y + h)) return true;
+    }
+    return false;
+  }
+
+  getIconBox(ri, ci) {
+    return this.iconBoxes.get(`${ri}_${ci}`);
+  }
+
+  addIconBox(x, y, w, h) {
+    this.iconBoxes.set(this.iconBoxKey, [x, y, w, h]);
+  }
+
+  removeIconBox() {
+    const key = this.iconBoxKey;
+    if (this.iconBoxes.has(key)) this.iconBoxes.delete(key);
   }
 
   render(box, cell) {

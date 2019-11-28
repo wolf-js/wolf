@@ -27,12 +27,15 @@ function setFormProperty(ri, ci, type) {
   }
 }
 
-function setFormValue(ri, ci, { type, value }) {
-  const { $data } = this;
+function setFormValue(ri, ci, { type, value }, ox, oy) {
+  const { $data, $table } = this;
   const { formValue } = this.$state;
   const {
     left, top, height,
   } = $data.selectedCellBox;
+  const { indexHeight, indexWidth } = $data;
+  const offset = [ox - left - indexWidth, oy - top - indexHeight];
+  if (!$table.cell.inIconBoxes(ri, ci, ...offset)) return;
   const validation = $data.validation(ri, ci, type);
   const nvalue = {
     type,
@@ -104,7 +107,7 @@ function overlayerClickLeftMouseButton(evt) {
     const { selectedCell } = $data;
     const { type } = selectedCell;
     setFormProperty.call(this, ri, ci, type);
-    setFormValue.call(this, ri, ci, selectedCell);
+    setFormValue.call(this, ri, ci, selectedCell, offsetX, offsetY);
     this.update();
     mouseMoveUp(window, (e) => {
       if (e.target === evt.target) {
