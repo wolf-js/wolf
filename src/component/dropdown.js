@@ -62,6 +62,7 @@ class Dropdown extends BaseElement {
 export {
   onShow,
   onChange,
+  renderContent,
   Dropdown,
 };
 export default Dropdown;

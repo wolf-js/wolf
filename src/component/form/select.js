@@ -1,27 +1,6 @@
-import {
-  html, component, bindClickoutside, unbindClickoutside,
-} from '../../core';
+import { component } from '../../core';
 import { Base } from './base';
-
-function onShow() {
-  this.$visible = !this.$visible;
-  if (this.$visible) {
-    bindClickoutside(this, onShow.bind(this));
-  } else {
-    unbindClickoutside(this);
-  }
-  this.update();
-}
-
-function onChange(...args) {
-  this.change(...args);
-  onShow.call(this);
-}
-
-function vText(items, v) {
-  const item = items.find(it => it[0] === v);
-  return '' || (item && item[1]);
-}
+import { onShow, renderContent } from '../dropdown';
 
 export default @component('wolf-select')
 class Select extends Base {
@@ -30,16 +9,8 @@ class Select extends Base {
   onclick = onShow.bind(this);
 
   render() {
-    const { $visible } = this;
-    const {
-      value, items, width, offset,
-    } = this.$props;
+    const { offset } = this.$props;
     if (offset) this.setOffset(offset);
-    return html`
-    <div class="only-text">${vText(items, value)}</div>
-    <ul class="content wolf-list" .show="${$visible}" style="${{ width: width || 'auto' }}">
-      ${items.map(it => html`<li @click.stop="${onChange.bind(this, it[0])}">${it[1]}</li>`)}
-    </ul>
-    `;
+    return renderContent.call(this);
   }
 }
