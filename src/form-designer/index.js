@@ -155,7 +155,7 @@ function overlayerMousedown(evt) {
 function overlayerClick(evt) {
   const { offsetX, offsetY } = evt;
   const { $data } = this;
-  let { ri, ci } = $data.cellBoxAndIndex(offsetX, offsetY);
+  const { ri, ci } = $data.cellBoxAndIndex(offsetX, offsetY);
   if (ri === -1 || ci === -1) return;
 
   const { selectedCell } = $data;

@@ -1,6 +1,18 @@
 import {
-  component, html, BaseElement,
+  component, html, BaseElement, bindClickoutside, unbindClickoutside,
 } from '../core';
+
+function onShow() {
+  const { show, clickoutside } = this.$props;
+  unbindClickoutside(this);
+  if (show === true) {
+    setTimeout(() => {
+      bindClickoutside(this, () => {
+        clickoutside();
+      });
+    }, 0);
+  }
+}
 
 function onChange(...args) {
   const { type } = this.$props;
@@ -18,9 +30,10 @@ export default @component('wolf-form-value-panel')
 class FormValuePanel extends BaseElement {
   render() {
     const {
-      offset, type, items,
+      offset, type, items, clickoutside,
     } = this.$props;
     if (offset) this.setOffset(offset);
+    if (clickoutside) onShow.call(this);
 
     // console.log('type:', type, items, value, offset);
     return html`
