@@ -53,7 +53,7 @@ export default class PropExpr extends Expr {
       }
       setElementProp(el, name, value);
       super.update(value);
-      return true;
+      return !(value instanceof Function);
     }
     return false;
   }
