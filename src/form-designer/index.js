@@ -104,10 +104,6 @@ function overlayerClickLeftMouseButton(evt) {
 
   if (!shiftKey) {
     $data.select.s(ri, ci);
-    const { selectedCell } = $data;
-    const { type } = selectedCell;
-    setFormProperty.call(this, ri, ci, type);
-    setFormValue.call(this, ri, ci, selectedCell, offsetX, offsetY);
     this.update();
     mouseMoveUp(window, (e) => {
       if (e.target === evt.target) {
@@ -154,6 +150,19 @@ function overlayerMousedown(evt) {
     // click the left mouse button
     overlayerClickLeftMouseButton.call(this, evt);
   }
+}
+
+function overlayerClick(evt) {
+  const { offsetX, offsetY } = evt;
+  const { $data } = this;
+  let { ri, ci } = $data.cellBoxAndIndex(offsetX, offsetY);
+  if (ri === -1 || ci === -1) return;
+
+  const { selectedCell } = $data;
+  const { type } = selectedCell;
+  setFormProperty.call(this, ri, ci, type);
+  setFormValue.call(this, ri, ci, selectedCell, offsetX, offsetY);
+  this.update();
 }
 
 function overlayerDragover() {
@@ -385,6 +394,7 @@ class FormDesigner extends BaseElement {
       <div class="overlayer" style="${{ width, height }}"
         @dragover.prevent="${overlayerDragover.bind(this)}"
         @drop.prevent="${overlayerDrop.bind(this)}"
+        @click="${overlayerClick.bind(this)}"
         @mousemove="${overlayerMousemove.bind(this)}"
         @mousedown="${overlayerMousedown.bind(this)}">
         <div class="content" style="${olcstyle}">
@@ -404,7 +414,7 @@ class FormDesigner extends BaseElement {
           .value="${formValue.value}"
           .offset="${formValue.offset}"
           .show="${formValue.show}"
-          @clickoutside="${formValueChange.bind(this)}"
+          .clickoutside="${formValueChange.bind(this)}"
           @change="${formValueChange.bind(this)}">
         </wolf-form-value-panel>
       </div>
