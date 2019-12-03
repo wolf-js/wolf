@@ -1,7 +1,7 @@
 import {
   html, component,
 } from '../core';
-import { onChange, Dropdown } from './dropdown';
+import { onShow, onChange, Dropdown } from './dropdown';
 
 const lineTypes = [
   ['thin', '<svg xmlns="http://www.w3.org/2000/svg" width="50" height="1" style="user-select: none;"><line x1="0" y1="0.5" x2="50" y2="0.5" stroke-width="1" stroke="black" style="user-select: none;"></line></svg>'],
@@ -28,7 +28,9 @@ class LineTypePicker extends Dropdown {
   render() {
     const { $visible } = this;
     return html`
-    <wolf-icon .type="line-type"></wolf-icon>
+    <div class="item" @click="${onShow.bind(this)}">
+      <wolf-icon .type="line-type"></wolf-icon>
+    </div>
     <ul class="content wolf-list" .show="${$visible}">
       ${buildItems.call(this)}
     </ul>

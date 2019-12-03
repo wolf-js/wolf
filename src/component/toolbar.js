@@ -37,11 +37,11 @@ class Toolbar extends BaseElement {
 
     return html`
     <div class="wolf-menu horizontal">
-      <wolf-dropdown class="item bottom left"
+      <wolf-dropdown class="left bottom"
         .value="${font.name}" .items="${fonts}" .width="160px"
         @change="${change.bind(this, 'font-name')}"
         @mouseenter="${bindTooltip('fontName')}"></wolf-dropdown>
-      <wolf-dropdown class="item bottom left"
+      <wolf-dropdown class="left bottom"
         .value="${font.size}" .items="${fontSizePts}" .width="60px"
         @change="${change.bind(this, 'font-size')}"
         @mouseenter="${bindTooltip('fontSize')}"></wolf-dropdown>
@@ -61,16 +61,16 @@ class Toolbar extends BaseElement {
         @mouseenter="${bindTooltip('underline')}">
         <wolf-icon .type="underline"></wolf-icon>
       </div>
-      <wolf-color-picker class="item bottom left"
+      <wolf-color-picker class="left bottom" 
         @change="${change.bind(this, 'color')}"
         @mouseenter="${bindTooltip('textColor')}"
         .icon="text-color" .value="${color}"></wolf-color-picker>
       <div class="divider"></div>
-      <wolf-color-picker class="item bottom left"
+      <wolf-color-picker class="left bottom"
         @change="${change.bind(this, 'bgcolor')}"
         @mouseenter="${bindTooltip('fillColor')}"
         .icon="fill-color" .value="${bgcolor}"></wolf-color-picker>
-      <wolf-border-picker class="item bottom left"
+      <wolf-border-picker class="left bottom"
         @change="${change.bind(this, 'border')}"
         @mouseenter="${bindTooltip('border')}">
       </wolf-border-picker>
@@ -80,11 +80,11 @@ class Toolbar extends BaseElement {
         <wolf-icon .type="merge"></wolf-icon>
       </div>
       <div class="divider"></div>
-      <wolf-align-picker class="item bottom left"
+      <wolf-align-picker class="left bottom"
         .value="${align}" .items="${aligns}"
         @change="${change.bind(this, 'align')}"
         @mouseenter="${bindTooltip('align')}"></wolf-align-picker>
-      <wolf-align-picker class="item bottom left"
+      <wolf-align-picker class="left bottom"
         .value="${valign}" .items="${valigns}"
         @change="${change.bind(this, 'valign')}"
         @mouseenter="${bindTooltip('valign')}"></wolf-align-picker>

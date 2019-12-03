@@ -41,7 +41,7 @@ function renderContent() {
   const { value, items, width } = this.$props;
   // console.log('$visible:', $visible);
   return html`
-  <div class="only-text">${vText(items, value)}</div>
+  <div class="item only-text" @click="${onShow.bind(this)}">${vText(items, value)}</div>
   <ul class="content wolf-list" .show="${$visible}" style="${{ width: width || 'auto' }}">
     ${items.map(it => html`<li @click.stop="${onChange.bind(this, itValue(it))}">${itText(it)}</li>`)}
   </ul>
@@ -52,7 +52,7 @@ function renderContent() {
 class Dropdown extends BaseElement {
   $visible = false;
 
-  onclick = onShow.bind(this);
+  // onclick = onShow.bind(this);
 
   render() {
     return renderContent.call(this);

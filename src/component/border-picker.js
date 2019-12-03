@@ -4,13 +4,14 @@ import {
 import './icon';
 import './line-type-picker';
 import './color-picker';
-import { onChange, Dropdown } from './dropdown';
+import { onShow, onChange, Dropdown } from './dropdown';
 
 const modes1 = ['all', 'inside', 'horizontal', 'vertical', 'outside'];
 const modes2 = ['left', 'top', 'right', 'bottom', 'none'];
 
 function modeChange(mode, evt) {
   const { color, style } = this.$state;
+  // this.change({ mode, color, style }, evt);
   onChange.call(this, { mode, color, style }, evt);
 }
 
@@ -33,7 +34,7 @@ function buildItems(items) {
     `);
 }
 
-const loop = () => {};
+// const loop = () => {};
 
 export default @component('wolf-border-picker')
 class BorderPicker extends Dropdown {
@@ -46,8 +47,10 @@ class BorderPicker extends Dropdown {
     const { color, style } = this.$state;
     const { $visible } = this;
     return html`
-    <wolf-icon .type="border-all"></wolf-icon>
-    <div class="content bottom left" .show="${$visible}" @click.stop="${loop}">
+    <div class="item" @click="${onShow.bind(this)}">
+      <wolf-icon .type="border-all"></wolf-icon>
+    </div>
+    <div class="content" .show="${$visible}">
       <table>
         <tbody>
           <tr>
@@ -61,12 +64,12 @@ class BorderPicker extends Dropdown {
             </td>
             <td class="right">
               <div class="wolf-menu">
-                <wolf-color-picker class="item bottom left" 
+                <wolf-color-picker
                   .icon="line-color"
                   .value="${color}"
                   @change="${colorChange.bind(this)}"
                   ></wolf-color-picker>
-                <wolf-line-type-picker class="item"
+                <wolf-line-type-picker
                   .value="${style}"
                   @change="${lineTypeChange.bind(this)}"
                   ></wolf-line-type-picker>
