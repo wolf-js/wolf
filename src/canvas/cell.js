@@ -1,3 +1,4 @@
+const checkedColor = '#4b89ff';
 function renderBorder() {
   const { canvas, data, box } = this;
   const { width, height } = box;
@@ -30,18 +31,30 @@ function renderBorder() {
 function renderIcon() {
   const { canvas, data, box } = this;
   const { width, height } = box;
-  const { type } = data;
+  const { type, value } = data;
   if (type === undefined) {
     this.removeIconBox();
     return;
   }
   canvas.saveRestore(() => {
     if (type === 'bool') {
-      const [x, y, w, h] = [width / 2 - 6, height / 2 - 6, 12, 12];
+      const [x, y, w, h] = [width / 2 - 6, height / 2 - 7, 12, 12];
       this.addIconBox(x, y, w, h);
-      canvas.attr({ strokeStyle: '#999999', lineWidth: 2 })
-        .roundRect(x, y, w, h, 2)
-        .stoke();
+      if (value === true) {
+        canvas.fill();
+        canvas.attr({ fillStyle: checkedColor, lineWidth: 2, strokeStyle: checkedColor })
+          .roundRect(x, y, w, h, 2).fill().stroke()
+          .attr({ strokeStyle: '#fff' })
+          .beginPath()
+          .moveTo(x + 2, y + 5)
+          .lineTo(x + w / 2 - 1, y + h - 3)
+          .lineTo(x + w - 1, y + 3)
+          .stroke();
+      } else {
+        canvas.attr({ strokeStyle: '#999', lineWidth: 2 })
+          .roundRect(x, y, w, h, 2)
+          .stroke();
+      }
     } else if (type === 'select') {
       const [x, y, w, h] = [width - 20, height - 20, 12, 12];
       this.addIconBox(x, y, w, h);
@@ -129,8 +142,8 @@ function textLine(type, align, valign, x, y, w, h) {
 function renderText() {
   const { canvas, box, data } = this;
   const [w, h] = [box.width, box.height];
-  const { value, style } = data;
-  if (!value) return;
+  const { value, style, type } = data;
+  if (!value || type === 'bool') return;
   const txt = value;
   const {
     align, valign, font, color, underline, textwrap, padding,
