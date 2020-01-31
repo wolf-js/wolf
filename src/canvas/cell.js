@@ -95,14 +95,14 @@ function textx(align, width, padding = 5) {
 }
 
 // align: top | middle | bottom
-function texty(valign, height, padding = 2) {
+function texty(valign, height, txtHeight, padding) {
   switch (valign) {
     case 'top':
       return padding;
     case 'middle':
-      return height / 2;
+      return height / 2 - txtHeight / 2;
     case 'bottom':
-      return height - padding;
+      return height - padding - txtHeight;
     default:
       return 0;
   }
@@ -146,7 +146,7 @@ function renderText() {
   if (!value || type === 'bool') return;
   const txt = value;
   const {
-    align, valign, font, color, underline, textwrap, padding,
+    align, valign, font, color, underline, strike, textwrap, padding,
   } = style;
 
   const {
@@ -162,35 +162,40 @@ function renderText() {
       strokeStyle: color,
     });
 
-    const txtw = canvas.textWidth(txt);
-    const [xp, yp] = padding || [5, 2];
-    const cellTxtw = w + (xp * 2);
-    const x = textx(align, w, xp);
-    let y = texty(valign, h, yp);
-    if (textwrap && txtw > cellTxtw) {
-      const linesLen = Math.ceil(txtw / cellTxtw);
-      if (valign === 'middle') {
-        y -= (linesLen * (font.size + yp)) / 2;
-      }
-      let txtLine = { w: 0, start: 0, c: '' };
-      for (let i = 0; i < txt.length; i += 1) {
-        if (txtLine.w >= cellTxtw) {
-          canvas.fillText(txtLine.c, x, y);
-          if (underline) canvas.line(...textLine('underline', align, valign, x, y, txtw, font.size));
-          txtLine = { w: 0, start: i, c: '' };
+    const [xp, yp] = padding || [5, 5];
+    const tx = textx(align, w, xp);
+    const txts = txt.split('\n');
+    const biw = w - (xp * 2);
+    const ntxts = [];
+    txts.forEach((it) => {
+      const txtWidth = canvas.textWidth(it);
+      if (textwrap && txtWidth > biw) {
+        let textLine = { w: 0, len: 0, start: 0 };
+        for (let i = 0; i < it.length; i += 1) {
+          if (textLine.w >= biw) {
+            ntxts.push(it.substr(textLine.start, textLine.len));
+            textLine = { w: 0, len: 0, start: i };
+          }
+          textLine.len += 1;
+          textLine.w += canvas.textWidth(it[i]) + 1;
         }
-        y += font.size + yp;
-        txtLine.c += txt[i];
-        txtLine.w += canvas.textWidth(txt[i]);
+        if (textLine.len > 0) {
+          ntxts.push(it.substr(textLine.start, textLine.len));
+        }
+      } else {
+        ntxts.push(it);
       }
-      if (txtLine.w > 0) {
-        canvas.fillText(txtLine.c, x, y);
-        if (underline) canvas.line(...textLine('underline', align, valign, x, y, txtw, font.size));
-      }
-    } else {
-      canvas.fillText(txt, x, y);
-      if (underline) canvas.line(...textLine('underline', align, valign, x, y, txtw, font.size));
-    }
+    });
+    const lineHeight = font.size * 1.425;
+    const txtHeight = (ntxts.length - 1) * lineHeight;
+    let ty = texty(valign, h, txtHeight, yp);
+    ntxts.forEach((txt) => {
+      const txtWidth = canvas.textWidth(txt);
+      canvas.fillText(txt, tx, ty);
+      if (strike) canvas.line(...textLine('strike', align, valign, tx, ty, txtWidth, font.size));
+      if (underline) canvas.line(...textLine('underline', align, valign, tx, ty, txtWidth, font.size));
+      ty += lineHeight;
+    });
   });
 }
 
