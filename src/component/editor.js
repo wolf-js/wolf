@@ -9,9 +9,13 @@ function inputHandler({ target }) {
 }
 
 function keydownHandler(evt) {
-  const { keyCode } = evt;
+  const { keyCode, altKey, target } = evt;
   if (keyCode !== 13 && keyCode !== 9) evt.stopPropagation();
-  if (keyCode === 13) evt.preventDefault();
+  if (keyCode === 13 && altKey) {
+    target.value += '\n';
+    evt.stopPropagation();
+  }
+  if (keyCode === 13 && !altKey) evt.preventDefault();
 }
 
 function setSelectionRange(position) {
