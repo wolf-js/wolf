@@ -144,7 +144,7 @@ function renderText() {
   const [w, h] = [box.width, box.height];
   const { value, style, type } = data;
   if (!value || type === 'bool') return;
-  const txt = value;
+  const txt = value + '';
   const {
     align, valign, font, color, underline, strike, textwrap, padding,
   } = style;
