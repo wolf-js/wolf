@@ -23,3 +23,21 @@ Object.assign(Date.prototype, {
     return fmt;
   },
 });
+
+// string extend
+Object.assign(String.prototype, {
+  capitalize() {
+    return this.replace(/\b[a-z]/g, letter => letter.toUpperCase());
+  },
+});
+
+// Array extend
+Object.assign(Array.prototype, {
+  first() {
+    return this[0];
+  },
+
+  last() {
+    return this[this.length - 1];
+  },
+});

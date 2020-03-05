@@ -131,8 +131,12 @@ export default class Data {
     loads.call(this);
   }
 
-  get design() {
-    return this.settings.mode === 'design';
+  get mode() {
+    const obj = {};
+    ['design', 'write', 'read'].forEach((it) => {
+      obj[`is${it.capitalize()}`] = () => this.settings.mode === it;
+    });
+    return obj;
   }
 
   get indexHeight() {
