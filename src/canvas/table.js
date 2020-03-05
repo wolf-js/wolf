@@ -148,12 +148,12 @@ export default class Table {
   render() {
     const { canvas, data } = this;
     const {
-      viewRange, design, indexWidth, indexHeight,
+      viewRange, mode, indexWidth, indexHeight,
     } = data;
     const { w, h } = viewRange;
     canvas.resize(w, h);
 
-    if (design) {
+    if (mode.isDesign()) {
       canvas.saveRestore(() => {
         canvas.translate(indexWidth, indexHeight);
         renderGrid.call(this, viewRange);
