@@ -86,39 +86,7 @@ function renderHeader(viewRange) {
 function renderCell(ri, ci, cellBox, merge = false) {
   const cell = this.data.cell(ri, ci);
   if (!merge && !cell.$) return;
-  // if (data.merges.includes(ri, ci)) return;
-
   this.cell.render(cellBox(), cell);
-  // cellRender(canvas, cellBox, cell);
-  // console.log(ri, ci, box);
-  /*
-  const box = Canvas.box(cellBox());
-  const {
-    bgcolor, border, font, align, valign, color, underline, textwrap,
-  } = cell.style;
-  box.bgcolor = bgcolor;
-  if (border) {
-    box.border = border;
-    canvas.border(box);
-  }
-  canvas.clipRect(box, () => {
-    // console.log(nfont);
-    const { value, type } = cell;
-    if (type === 'radio' || type === 'checkbox') {
-      const { options } = data.validation(ri, ci).rule;
-      // console.log('valdation:', data.validation(ri, ci));
-      canvas.tag(box, options, value, textwrap);
-    } else if (value) {
-      // const nfont = Object.assign({}, font);
-      canvas.text(value, box, {
-        align, valign, font, color, underline,
-      }, textwrap);
-    }
-    if (type !== undefined) {
-      canvas.icon(type, box);
-    }
-  });
-  */
 }
 
 function renderContent(viewRange) {
@@ -160,6 +128,8 @@ export default class Table {
         renderContent.call(this, viewRange);
       });
       renderHeader.call(this, viewRange);
+    } else {
+      renderContent.call(this, viewRange);
     }
   }
 }
