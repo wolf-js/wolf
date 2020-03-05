@@ -57,6 +57,19 @@ function setFormValue(ri, ci, { type, value }, ox, oy) {
   }
 }
 
+function hideResizers() {
+  const { rResizer, cResizer } = this.$state;
+  if (rResizer.show || cResizer.show) {
+    rResizer.show = false;
+    cResizer.show = false;
+    this.update(false);
+  }
+}
+
+function overlayerMouseout() {
+  hideResizers.call(this);
+}
+
 function overlayerMousemove(evt) {
   const { buttons, offsetX, offsetY } = evt;
   // console.log('buttons:', buttons);
@@ -66,11 +79,7 @@ function overlayerMousemove(evt) {
   // console.log('offsetX:', offsetX, ', offsetY:', offsetY);
   if (offsetX > indexWidth && offsetY > indexHeight) {
     // console.log('rResizer.show:', rResizer.show);
-    if (rResizer.show || cResizer.show) {
-      rResizer.show = false;
-      cResizer.show = false;
-      this.update(false);
-    }
+    hideResizers.call(this);
   } else {
     const {
       ri, ci, left, top, width, height,
@@ -395,6 +404,7 @@ class FormDesigner extends BaseElement {
         @dragover.prevent="${overlayerDragover.bind(this)}"
         @drop.prevent="${overlayerDrop.bind(this)}"
         @click="${overlayerClick.bind(this)}"
+        @mouseout="${overlayerMouseout.bind(this)}"
         @mousemove="${overlayerMousemove.bind(this)}"
         @mousedown="${overlayerMousedown.bind(this)}">
         <div class="content" style="${olcstyle}">

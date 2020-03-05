@@ -144,7 +144,7 @@ function renderText() {
   const [w, h] = [box.width, box.height];
   const { value, style, type } = data;
   if (!value || type === 'bool') return;
-  const txt = value + '';
+  const txt = `${value}`;
   const {
     align, valign, font, color, underline, strike, textwrap, padding,
   } = style;
@@ -170,17 +170,17 @@ function renderText() {
     txts.forEach((it) => {
       const txtWidth = canvas.textWidth(it);
       if (textwrap && txtWidth > biw) {
-        let textLine = { w: 0, len: 0, start: 0 };
+        let tline = { w: 0, len: 0, start: 0 };
         for (let i = 0; i < it.length; i += 1) {
-          if (textLine.w >= biw) {
-            ntxts.push(it.substr(textLine.start, textLine.len));
-            textLine = { w: 0, len: 0, start: i };
+          if (tline.w >= biw) {
+            ntxts.push(it.substr(tline.start, tline.len));
+            tline = { w: 0, len: 0, start: i };
           }
-          textLine.len += 1;
-          textLine.w += canvas.textWidth(it[i]) + 1;
+          tline.len += 1;
+          tline.w += canvas.textWidth(it[i]) + 1;
         }
-        if (textLine.len > 0) {
-          ntxts.push(it.substr(textLine.start, textLine.len));
+        if (tline.len > 0) {
+          ntxts.push(it.substr(tline.start, tline.len));
         }
       } else {
         ntxts.push(it);
@@ -189,9 +189,9 @@ function renderText() {
     const lineHeight = font.size * 1.425;
     const txtHeight = (ntxts.length - 1) * lineHeight;
     let ty = texty(valign, h, txtHeight, yp);
-    ntxts.forEach((txt) => {
-      const txtWidth = canvas.textWidth(txt);
-      canvas.fillText(txt, tx, ty);
+    ntxts.forEach((it) => {
+      const txtWidth = canvas.textWidth(it);
+      canvas.fillText(it, tx, ty);
       if (strike) canvas.line(...textLine('strike', align, valign, tx, ty, txtWidth, font.size));
       if (underline) canvas.line(...textLine('underline', align, valign, tx, ty, txtWidth, font.size));
       ty += lineHeight;
